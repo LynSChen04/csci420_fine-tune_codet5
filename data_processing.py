@@ -44,10 +44,10 @@ def combine_mask_tokens(tokens):
     i = 0
     while i < len(tokens):
         if i + 2 < len(tokens) and tokens[i] == "<" and tokens[i + 1] == "mask" and tokens[i + 2] == ">":
-            combined_tokens.append("<mask>")
+            combined_tokens.append("<mask>".strip())
             i += 3
         else:
-            combined_tokens.append(tokens[i])
+            combined_tokens.append(tokens[i].strip())
             i += 1
     return combined_tokens
 
@@ -58,4 +58,4 @@ print("train_data['tokenized']", train_data['tokenized'].head())
 train_data['token_count'] = train_data['tokenized'].apply(len)
 
 # Write the dataframe to a CSV file excluding the 'tokens' column
-train_data.drop(columns=['tokens']).to_csv("masked_test.csv", index=False)
+train_data.drop(columns=['tokens']).to_csv("masked_train.csv", index=False)
