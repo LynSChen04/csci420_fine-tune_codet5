@@ -1,4 +1,3 @@
-import os
 import pandas as pd
 from transformers import AutoTokenizer, AutoModelForSeq2SeqLM
 from transformers import T5Tokenizer
@@ -70,6 +69,25 @@ def dataCleaning(modelName, csv):
     # Save unique token set to disk
     with open("uniqueTokens.pkl", "wb") as f:
         pickle.dump(unique_tokens, f)
+
+#Convert csv's into Hugging Face datasets
+def preprocess_function(df):
+    tokenizer = AutoTokenizer.from_pretrained("Salesforce/codet5-base")
+    model_input = tokenizer(
+        df["cleaned_method"],
+        padding="max_length",
+        truncation=True,
+        max_length=256
+    )
+    with tokenizer.as_target_tokenizer():
+        labels = tokenizer(
+            df["target_block"],
+            padding="max_length",
+            truncation=True,
+            max_length=64
+        )
+    model_input["labels"] = labels["input_ids"]
+    return model_input
 
 
 if __name__ == "__main__":
