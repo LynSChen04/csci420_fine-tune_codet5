@@ -96,3 +96,31 @@ result = subprocess.run(command, capture_output=True, text=True)
 
 # Print the CodeBLEU score
 print(result.stdout)
+
+# Prepare the "final_results" DataFrame
+final_results = pd.DataFrame()
+
+# Copy "cleaned_method" and replace "target_block" with "<mask>"
+final_results["input_function"] = df["cleaned_method"].apply(
+    lambda method: method.replace(df["target_block"].iloc[0], "<mask>")
+)
+
+# Add "exact_match" column
+final_results["exact_match"] = [
+    pred == ref for pred, ref in zip(outputs, df["target_block"].tolist())
+]
+
+# Add "expected_if" column
+final_results["expected_if"] = df["target_block"]
+
+# Add "predicted_if" column
+final_results["predicted_if"] = outputs
+
+# Add "codeBLEU" column
+final_results["codeBLEU"] = [float(result.stdout.strip())] * len(outputs)
+
+# Add "BLEU-4" column
+final_results["BLEU-4"] = [bleu_score["bleu"]] * len(outputs)
+
+# Save the "final_results" DataFrame to a CSV file
+final_results.to_csv("final_results.csv", index=False)
