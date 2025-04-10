@@ -79,7 +79,7 @@ As the assignment dictated, we used a pretrained tokenizer from "Salesforce/Code
 
 ## **3.3 Model Evaluation**
 
-LYNELLE WRITE HERE
+The `evaluation.py` script takes the locally saved model's directory and an already masked test dataset that has been run through the original `data_processing.py` script. It will then produce `final_results.csv`, which will contain the inputted function, the expected if statement, the model's predicted if statement, the BLEU score, the CodeBLEU score, and whether it was an exact match. Additionally, the script will also print out the overall BLEU, CodeBLEU, and exact match metrics. For the outputted file, BLEU and CodeBLEU scores are rescaled to be from 0 to 100.
 
 ## **3.4 Finetuning Metrics**
 
