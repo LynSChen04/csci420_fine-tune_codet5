@@ -1,30 +1,14 @@
 from transformers import (
     RobertaTokenizer, T5ForConditionalGeneration,
-    AutoTokenizer,Trainer, TrainingArguments,
+    Trainer, TrainingArguments,
     EarlyStoppingCallback
 )
 from datasets import Dataset
 import pickle
 import pandas as pd
-import evaluate
 import data_processing
 from pathlib import Path
-
-#contains all evaluation things TODO UNFINSHED
-def modelEvaluations():
-    
-    #Model evaluation:
-    bleu = evaluate.load("bleu")  # This uses BLEU-4 by default (n_gram=4)
-    sacrebleu = evaluate.load("sacrebleu")
-    return("ping")
-
-#helper function for exact correctness TODO UNFINSHED
-def exact(predict, actual):
-    correct = 0
-    for p,a in zip(predict, actual):
-        if p == a:
-            correct += 1
-    return float(correct)/len(predict)
+import os 
 
 if __name__ == "__main__":
     folder = Path("ProvidedData")
@@ -34,6 +18,9 @@ if __name__ == "__main__":
     if not Path(file1).exists() or not Path(file2).exists():
         print("files do not exist, creating")
         data_processing.dataCleaning("Salesforce/codet5-base", folder/"ft_train.csv")
+        
+    os.makedirs("codet5-finetuned", exist_ok=True)
+    os.makedirs("logs", exist_ok=True)
 
     print("getting tokenizer and model")
     #Tokenizer and model
@@ -67,7 +54,6 @@ if __name__ == "__main__":
     training_args = TrainingArguments(
     output_dir="./codet5-finetuned",
     eval_strategy="epoch",
-    logging_strategy="epoch",
     save_strategy="epoch",
     logging_dir="./logs",
     learning_rate=5e-5,
@@ -78,8 +64,9 @@ if __name__ == "__main__":
     load_best_model_at_end=True,
     metric_for_best_model="eval_loss",
     save_total_limit=2,
+    logging_steps=100,
     push_to_hub=False,
-)
+    )
 
 
     trainer = Trainer(
@@ -95,9 +82,4 @@ if __name__ == "__main__":
     # --- Fine-tune automatically ---
     trainer.train()
     trainer.save_model("./codet5-finetuned/final-model")
-
-    # Get the full training/evaluation history
-    log_df = pd.DataFrame(trainer.state.log_history)
-    log_df.to_csv("training_log.csv", index=False)
-    
     print("finished")
