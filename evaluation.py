@@ -109,7 +109,7 @@ for ref, pred in zip(refs, preds):
 df["codebleu_score"] = codebleu_scores
 
 # Print a message indicating completion
-print("✅ CodeBLEU scores calculated and saved to codebleu_results.csv")
+print("✅ CodeBLEU scores calculated")
 
 
 # Compute BLEU score
@@ -124,7 +124,7 @@ for ref, pred in zip(references, predictions):
 df["bleu_score"] = bleu_scores
 
 # Print a message indicating completion
-print("✅ BLEU scores calculated and saved to bleu_results.csv")
+print("✅ BLEU scores calculated")
 
 
 # Compute exact match score and save True/False for each prediction
@@ -148,8 +148,8 @@ final_results["input_function"] = df["cleaned_method"].apply(
 
 final_results["expected_if"] = df["target_block"]
 final_results["predicted_if"] = outputs
-final_results["bleu_score"] = bleu_scores
-final_results["codebleu_score"] = codebleu_scores
+final_results["bleu_score"] = [score * 100 for score in bleu_scores]
+final_results["codebleu_score"] = [score["codebleu"] * 100 for score in codebleu_scores]
 final_results["exact_match"] = df["exact_match"]
 
 # Save the "final_results" DataFrame to a CSV file
