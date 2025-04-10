@@ -78,6 +78,7 @@ The `main.py` script takes a corpus of Python methods titled `masked_train.csv`,
 As the assignment dictated, we used a pretrained tokenizer from "Salesforce/CodeT5-base" to tokenize the training and validating data. Additionally, for the test dataset we removed whitespace and masked the target if statement of the input function with a masked token, ensuring that after the entire process that the token would stay as one instead of separating. This would then serve as the proper input for our evaluation where the model would have to predict the contents of what the masked token should be.
 
 ## **3.3 Model Evaluation**
+
 LYNELLE WRITE HERE
 
 ## **3.4 Finetuning Metrics**
@@ -86,5 +87,5 @@ We did not modify the given parameters extensively. The parameter we used to det
 
 ## 4. Report
 
-The assignment report is available in the file **FILL IN HERE**.
+The assignment report is available in the file **Writeup.pdf**.
 The csv file with our test set results is available in the file **final_results.csv**, with required True/False column for exact match, expected if condition, predicted if condition, CodeBLEU prediction score on a scale of 0 to 100, and BLEU prediction score on a scale of 0 to 100.
