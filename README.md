@@ -74,7 +74,7 @@ The `main.py` script takes a corpus of Python methods titled `masked_train.csv`,
 
 ## **3.2 Dataset Preparation**
 
-As the assignment dictated, we used a pretrained tokenizer from "Salesforce/CodeT5-base" to tokenize the training and validating data. Additionally, for the test dataset we removed whitespace and masked the target if statement of the input function with a "<mask>" token, ensuring that after the entire process that the token would stay as one instead of separating. This would then serve as the proper input for our evaluation where the model would have to predict the contents of what the "<mask>" token should be.
+As the assignment dictated, we used a pretrained tokenizer from "Salesforce/CodeT5-base" to tokenize the training and validating data. Additionally, for the test dataset we removed whitespace and masked the target if statement of the input function with a masked token, ensuring that after the entire process that the token would stay as one instead of separating. This would then serve as the proper input for our evaluation where the model would have to predict the contents of what the masked token should be.
 
 ## **3.3 Finetuning Metrics**
 
