@@ -1,3 +1,8 @@
 CodeXGLUE/
 /codet5-finetuned/checkpoint-100000
 /codet5-finetuned/checkpoint-75000
+/codet5-finetuned
+training_log.csv
+uniqueTokens.pkl
+masked_train.csv
+masked_test.csv

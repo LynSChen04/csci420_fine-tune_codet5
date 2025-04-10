@@ -4,12 +4,11 @@ from transformers import T5Tokenizer
 import torch
 import evaluate
 import subprocess
-from transformers import RobertaTokenizer
+from transformers import AutoTokenizer
 from codebleu import calc_codebleu
 
 # Load the saved model
-model_path = "./final-model-epoch5"
-tokenizer_path = "Salesforce/codet5-base"
+model_path = "codet5-finetuned/final-model"
 model = T5ForConditionalGeneration.from_pretrained(model_path)
 
 # Read the "tokenized" column from masked_test.csv
@@ -21,7 +20,7 @@ input_tests = df["tokenized"].tolist()
 # Run the test on the model
 
 # Load the tokenizer
-tokenizer = RobertaTokenizer.from_pretrained(tokenizer_path)
+tokenizer = AutoTokenizer.from_pretrained(model_path)
 
 # Generate predictions for each input
 outputs = []
@@ -47,8 +46,6 @@ df.to_csv(csv_path, index=False)
 #     print(f"Output {i + 1}: {output}")
 #     print()
 
-
-# Evaluation scores
 
 # Load the BLEU metric
 bleu = evaluate.load("bleu")
@@ -94,7 +91,7 @@ def clean_codebleu_inputs(predictions, references):
             cleaned_preds.append(p.strip())
             cleaned_refs.append(r.strip())
         else:
-            print(f"❌ Skipping bad input pair: {type(p)} / {type(r)}")
+            print(f"Skipping bad input pair: {type(p)} / {type(r)}")
     return cleaned_preds, cleaned_refs
 
 preds, refs = clean_codebleu_inputs(predictions, codebleu_references)
@@ -109,7 +106,7 @@ for ref, pred in zip(refs, preds):
 df["codebleu_score"] = codebleu_scores
 
 # Print a message indicating completion
-print("✅ CodeBLEU scores calculated")
+print("CodeBLEU scores calculated")
 
 
 # Compute BLEU score
@@ -124,7 +121,7 @@ for ref, pred in zip(references, predictions):
 df["bleu_score"] = bleu_scores
 
 # Print a message indicating completion
-print("✅ BLEU scores calculated")
+print("BLEU scores calculated")
 
 
 # Compute exact match score and save True/False for each prediction
@@ -154,3 +151,4 @@ final_results["exact_match"] = df["exact_match"]
 
 # Save the "final_results" DataFrame to a CSV file
 final_results.to_csv("final_results.csv", index=False)
+print("Finished")

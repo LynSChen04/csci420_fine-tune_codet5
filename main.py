@@ -56,6 +56,7 @@ if __name__ == "__main__":
     eval_strategy="epoch",
     save_strategy="epoch",
     logging_dir="./logs",
+    logging_strategy="epoch",
     learning_rate=5e-5,
     per_device_train_batch_size=2,
     per_device_eval_batch_size=2,
@@ -64,7 +65,6 @@ if __name__ == "__main__":
     load_best_model_at_end=True,
     metric_for_best_model="eval_loss",
     save_total_limit=2,
-    logging_steps=100,
     push_to_hub=False,
     )
 
@@ -82,4 +82,9 @@ if __name__ == "__main__":
     # --- Fine-tune automatically ---
     trainer.train()
     trainer.save_model("./codet5-finetuned/final-model")
+    
+    log_df = pd.DataFrame(trainer.state.log_history)
+    log_df.to_csv("training_log.csv", index=False)
+    
     print("finished")
+
