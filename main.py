@@ -89,6 +89,6 @@ if __name__ == "__main__":
     
     if not Path("masked_train.csv").exists():
         data_processing.dataCleaning("Salesforce/codet5-base", folder/"ft_test.csv","masked_test.csv")
-    evaluation.evaluate("codet5-finetuned/final-model", "./masked_test.csv", "final_results.csv")
+    evaluation.evalModel("codet5-finetuned/final-model", "./masked_test.csv", "final_results.csv")
     print("finished")
 

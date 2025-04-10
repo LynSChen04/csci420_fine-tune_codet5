@@ -151,3 +151,6 @@ def evalModel(model_path, csv_path, output):
     # Save the "final_results" DataFrame to a CSV file
     final_results.to_csv(output, index=False)
     print("Finished")
+
+if __name__ == "__main__":
+    evalModel("codet5-finetuned/final-model", "./masked_test.csv", "final_results.csv")
