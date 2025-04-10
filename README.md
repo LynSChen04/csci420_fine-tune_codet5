@@ -7,7 +7,8 @@
 - [3 Model Training & Evaluation](#3-model-training--evaluation)
   - [3.1 Finetuning Code-t5](#31-finetuning-code-t5)
   - [3.2 Dataset Preparation](#32-dataset-preparation)
-  - [3.3 Finetuning Metrics](#33-finetuning-metrics)
+  - [3.3 Model Evaluation](#33-model-evaluation)
+  - [3.4 Finetuning Metrics](#34-finetuning-metrics)
 - [4 Report](#4-report)
 
 ---
@@ -76,7 +77,10 @@ The `main.py` script takes a corpus of Python methods titled `masked_train.csv`,
 
 As the assignment dictated, we used a pretrained tokenizer from "Salesforce/CodeT5-base" to tokenize the training and validating data. Additionally, for the test dataset we removed whitespace and masked the target if statement of the input function with a masked token, ensuring that after the entire process that the token would stay as one instead of separating. This would then serve as the proper input for our evaluation where the model would have to predict the contents of what the masked token should be.
 
-## **3.3 Finetuning Metrics**
+## **3.3 Model Evaluation**
+LYNELLE WRITE HERE
+
+## **3.4 Finetuning Metrics**
 
 We did not modify the given parameters extensively. The parameter we used to determine the best model was the loss function on the validation set.
 
