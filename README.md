@@ -71,7 +71,7 @@ Install the required dependencies:
 
 ## **3.1 Finetuning Code-t5**
 
-The `main.py` script takes a corpus of Python methods titled `masked_train.csv`, and a pickle file titled `uniqueTokens.pkl`. We use the pickle files to expand the tokenizers vocabulary so that every token is guranteed known and recongized. We then use `masked_train.csv` as our training corpus, `\ProvidedData\ft_test.csv`, and `\ProvidedData\ft_valid.csv` as our testing and validation sets respectively. Our `main.py` file saves relevant model data including the best model, which is determined by metrics that will be discussed later, to `csci432_fine-tune_codet5\codet5-finetuned`.
+The `main.py` script takes a corpus of Python methods titled `masked_train.csv`, and a pickle file titled `uniqueTokens.pkl`. We use the pickle files to expand the tokenizers vocabulary so that every token is guranteed known and recongized. We then use `masked_train.csv` as our training corpus, `\ProvidedData\ft_test.csv`, and `\ProvidedData\ft_valid.csv` as our testing and validation sets respectively. Our `main.py` file saves relevant model data including the best model, which is determined by metrics that will be discussed later, to `csci432_fine-tune_codet5\codet5-finetuned`. After finetuning, we automatically run model evaluation afterwards using the 'evaluation.py' script.
 
 ## **3.2 Dataset Preparation**
 
