@@ -15,7 +15,7 @@ model = T5ForConditionalGeneration.from_pretrained(model_path)
 # Read the "tokenized" column from masked_test.csv
 
 csv_path = "./masked_test.csv"
-df = pd.read_csv(csv_path)
+df = pd.read_csv(csv_path).head(10)
 input_tests = df["tokenized"].tolist()
 
 # Run the test on the model
@@ -99,26 +99,43 @@ def clean_codebleu_inputs(predictions, references):
 
 preds, refs = clean_codebleu_inputs(predictions, codebleu_references)
 
-codebleu_score = calc_codebleu(refs, preds, lang="python")
-print("✅ CodeBLEU Score:", codebleu_score)
+# Calculate CodeBLEU for each reference and prediction pair individually
+codebleu_scores = []
+for ref, pred in zip(refs, preds):
+    score = calc_codebleu([ref], [pred], lang="python")
+    codebleu_scores.append(score)
+
+# Add CodeBLEU scores to the DataFrame
+df["codebleu_score"] = codebleu_scores
+
+# Print a message indicating completion
+print("✅ CodeBLEU scores calculated and saved to codebleu_results.csv")
 
 
 # Compute BLEU score
 bleu_score = bleu.compute(predictions=predictions, references=references)
+# Calculate BLEU score for each reference and prediction pair individually
+bleu_scores = []
+for ref, pred in zip(references, predictions):
+    individual_bleu = bleu.compute(predictions=[pred], references=[[ref[0]]])
+    bleu_scores.append(individual_bleu['bleu'])
 
-# Print BLEU score
-print(f"BLEU Score: {bleu_score['bleu']}")
+# Add BLEU scores to the DataFrame
+df["bleu_score"] = bleu_scores
 
-# Compute exact match score
+# Print a message indicating completion
+print("✅ BLEU scores calculated and saved to bleu_results.csv")
+
+
+# Compute exact match score and save True/False for each prediction
 def exact_match(predictions, references):
-    correct = 0
-    for pred, ref in zip(predictions, references):
-        if pred == ref:
-            correct += 1
-    return correct / len(predictions)
+    return [pred == ref for pred, ref in zip(predictions, references)]
 
-# Print exact match score
-exact_match_score = exact_match(outputs, df["target_block"].tolist())
+# Add exact match results to the DataFrame
+df["exact_match"] = exact_match(outputs, df["target_block"].tolist())
+
+# Compute overall exact match score
+exact_match_score = df["exact_match"].mean()
 print(f"Exact Match Score: {exact_match_score}")
 
 # Prepare the "final_results" DataFrame
@@ -129,16 +146,11 @@ final_results["input_function"] = df["cleaned_method"].apply(
     lambda method: method.replace(df["target_block"].iloc[0], "<mask>")
 )
 
-# Add "exact_match" column
-final_results["exact_match"] = [
-    pred == ref for pred, ref in zip(outputs, df["target_block"].tolist())
-]
-
-# Add "expected_if" column
 final_results["expected_if"] = df["target_block"]
-
-# Add "predicted_if" column
 final_results["predicted_if"] = outputs
+final_results["bleu_score"] = bleu_scores
+final_results["codebleu_score"] = codebleu_scores
+final_results["exact_match"] = df["exact_match"]
 
 # Save the "final_results" DataFrame to a CSV file
 final_results.to_csv("final_results.csv", index=False)
