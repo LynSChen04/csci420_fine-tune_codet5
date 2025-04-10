@@ -1,2 +1,76 @@
-# csci432_fine-tune_codet5
-Fine-Tuning CodeT5 for Predicting if Statements
+# GenAI for Software Development (Fine-Tuning CodeT5 for Predicting if Statements)
+
+* [1 Introduction](#1-introduction)  
+* [2 Getting Started](#2-getting-started)  
+  * [2.1 Preparations](#21-preparations)  
+  * [2.2 Install Packages](#22-install-packages)  
+* [3 Model Training & Evaluation](#3-model-training--evaluation)  
+  * [3.1 Finetuning Code-t5](#31-finetuning-code-t5)  
+  * [3.2 Dataset Preparation](#32-dataset-preparation)  
+  * [3.3 Finetuning Metrics](#33-finetuning-metrics)  
+* [4 Report](#4-report)
+
+
+---
+
+# **1. Introduction** 
+This project finetunes the CodeT5 model to predict python if statements. By default it will go through 5 epochs and save relevant data about the training to the logs folder. 
+
+---
+
+# **2. Getting Started**  
+
+This project is implemented in **Python 3.12+** and is compatible with **macOS, Linux, and Windows**.  
+
+## **2.1 Preparations**  
+
+(1) Clone the repository to your workspace:  
+```shell
+~ $ git clone https://github.com/LynSChen04/csci432_fine-tune_codet5
+```
+
+(2) Navigate into the repository:
+```
+~ $ cd csci432_fine-tune_codet5
+~/csci432_fine-tune_codet5 $
+```
+
+(3) Set up a virtual environment and activate it:
+
+For macOS/Linux:
+```
+~/csci432_fine-tune_codet5 $ python -m venv ./venv/
+~/csci432_fine-tune_codet5 $ source venv/bin/activate
+(venv) ~/csci432_fine-tune_codet5 $ 
+```
+
+For Windows:
+```
+~/csci432_fine-tune_codet5 $ python -m venv ./venv/
+~/csci432_fine-tune_codet5 $ .\venv\Scripts\activate
+```
+
+To deactivate the virtual environment, use the command:
+```
+(venv) $ deactivate
+```
+
+## **2.2 Install Packages**
+
+Install the required dependencies:
+```shell
+(venv) ~/csci432_fine-tune_codet5 $ pip install -r requirements.txt
+```
+
+## **3.1 Finetuning Code-t5**
+The ```main.py``` script takes a corpus of Python methods titled ```masked_train.csv```, and a pickle file titled ```uniqueTokens.pkl```. We use the pickle files to expand the tokenizers vocabulary so that every token is guranteed known and recongized. We then use ```masked_train.csv``` as our training corpus, ```\ProvidedData\ft_test.csv```, and ```\ProvidedData\ft_valid.csv``` as our testing and validation sets respectively. Our ```main.py``` file saves relevant model data including the best model, which is determined by metrics that will be discussed later, to ```csci432_fine-tune_codet5\codet5-finetuned```. 
+
+## **3.2 Dataset Preparation**
+LYNELLE WRITE HERE
+
+## **3.3 Finetuning Metrics**
+We did not modify the given parameters extensively. The parameter we used to determine the best model was the loss function on the validation set.  
+
+## 4. Report
+
+The assignment report is available in the file **FILL IN HERE**.
