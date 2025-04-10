@@ -9,6 +9,7 @@ import pandas as pd
 import data_processing
 from pathlib import Path
 import os 
+import evaluation
 
 if __name__ == "__main__":
     folder = Path("ProvidedData")
@@ -17,7 +18,7 @@ if __name__ == "__main__":
     #check if both files exist, if not create
     if not Path(file1).exists() or not Path(file2).exists():
         print("files do not exist, creating")
-        data_processing.dataCleaning("Salesforce/codet5-base", folder/"ft_train.csv")
+        data_processing.dataCleaning("Salesforce/codet5-base", folder/"ft_train.csv","masked_train.csv")
         
     os.makedirs("codet5-finetuned", exist_ok=True)
     os.makedirs("logs", exist_ok=True)
@@ -86,5 +87,8 @@ if __name__ == "__main__":
     log_df = pd.DataFrame(trainer.state.log_history)
     log_df.to_csv("training_log.csv", index=False)
     
+    if not Path("masked_train.csv").exists():
+        data_processing.dataCleaning("Salesforce/codet5-base", folder/"ft_test.csv","masked_test.csv")
+    evaluation.evaluate("codet5-finetuned/final-model", "./masked_test.csv", "final_results.csv")
     print("finished")
 

@@ -3,7 +3,7 @@ from transformers import AutoTokenizer, AutoModelForSeq2SeqLM
 from transformers import T5Tokenizer
 import pickle
 
-def dataCleaning(modelName, csv):
+def dataCleaning(modelName, csv, savedCSV):
     # Load the pretrained CodeT5 model and tokenizer
     model_name = modelName
     tokenizer = AutoTokenizer.from_pretrained(model_name)
@@ -59,7 +59,7 @@ def dataCleaning(modelName, csv):
     train_data['token_count'] = train_data['tokenized'].apply(len)
 
     # Write the dataframe to a CSV file excluding the 'tokens' column
-    train_data.drop(columns=['tokens']).to_csv("masked_train.csv", index=False)
+    train_data.drop(columns=['tokens']).to_csv(savedCSV, index=False)
      # Count unique tokens
     all_tokens = train_data['tokenized'].explode()
     unique_tokens = set(all_tokens)
@@ -91,4 +91,4 @@ def preprocess_function(df):
 
 
 if __name__ == "__main__":
-    dataCleaning("Salesforce/codet5-base", "ProvidedData/ft_train.csv")
+    dataCleaning("Salesforce/codet5-base", "ProvidedData/ft_train.csv", "masked_train.csv")
